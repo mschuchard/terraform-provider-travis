@@ -1,0 +1,3 @@
+provider travis {
+  token = "foo"
+}
