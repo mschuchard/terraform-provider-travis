@@ -3,7 +3,7 @@ GOPATH := $(shell pwd)
 all: dep clean build test install
 
 dep:
-	ln -s $(shell pwd)/travis src/.
+	ln -sf $(shell pwd)/travis src/.
 	GOPATH=$(GOPATH) go get
 
 clean:

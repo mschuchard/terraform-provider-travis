@@ -2,10 +2,8 @@ package travis
 
 import (
   "github.com/hashicorp/terraform/helper/schema"
-  "net/http"
   "fmt"
   "strings"
-  "io/ioutil"
 )
 
 // base reesource declaration and schema
@@ -43,20 +41,17 @@ func buildJob() *schema.Resource {
 func buildJobCreate(data *schema.ResourceData, m interface{}) error {
   // convert repository value
   repository := strings.Replace(data.Get("repository").(string), "/", "%2F", 0)
+
   // construct endpoint
-  endpoint := fmt.Sprintf("https://api.travis-ci.org/repo/%s/requests", repository)
-  // access travis endpoint to initiate build job
-  client := &http.Client{}
-  request, err := client.NewRequest("POST", endpoint, nil)//, body='{"request": {"branch":"master"}}') TODO: and use branch from schema
-  client.Header.Add("Content-Type", "application/json")
-  client.Header.Add("Accept", "application/json")
-  client.Header.Add("Travis-API-Version", "3")
-  client.Header.Add("Authorization", travisOpts.token)
-  response, err := client.Do(request)
-  // TODO: err handle
-  // read body of response
-  defer response.Body.Close()
-  body, err := ioutil.ReadAll(response.Body)
+  endpoint := fmt.Sprintf("%s/requests", repository)
+
+  // construct headers
+  headers := map[string]string{}
+  //, body='{"request": {"branch":"master"}}') TODO: and use branch from schema
+
+  // receive response body
+  body = apiClient("POST", endpoint, headers, "")
+
   // set resource id to response body
   data.SetId(body)
 
