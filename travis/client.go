@@ -1,6 +1,7 @@
 package travis
 
 import (
+  "bytes"
   "net/http"
   "io/ioutil"
 )
@@ -12,17 +13,25 @@ func apiClient(method string, endpoint string, headers map[string]string, body s
 
   // initialize http client
   client := &http.Client{}
-  request, err := client.NewRequest(method, url, nil, body)
+  // ternary to convert body into bytes.Buffer pointer
+  var bodyBuffer *bytes.Buffer
+  if body != nil {
+    bodyBuffer = bytes.NewBuffer([]byte(body))
+  } else {
+    bodyBuffer = nil
+  }
+  // body always request body or nil for reads
+  request, err := http.NewRequest(method, url, bodyBuffer)
 
   // append base headers
-  client.Header.Add("Content-Type", "application/json")
-  client.Header.Add("Accept", "application/json")
-  client.Header.Add("Travis-API-Version", "3")
-  client.Header.Add("Authorization", travisOpts.token)
+  request.Header.Add("Content-Type", "application/json")
+  request.Header.Add("Accept", "application/json")
+  request.Header.Add("Travis-API-Version", "3")
+  request.Header.Add("Authorization", travisOpts.token)
 
   // append extra headers; TODO: block conflict with above
   for headerKey, headerValue := range headers {
-    client.Header.Add(headerKey, headerValue)
+    request.Header.Add(headerKey, headerValue)
   }
 
   // initiate request for response
