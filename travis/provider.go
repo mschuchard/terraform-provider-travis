@@ -29,10 +29,13 @@ func Provider() terraform.ResourceProvider {
 }
 
 // configure provider options; TODO: token validity check of some kind
-func configureProvider(data *schema.ResourceData) (travisOpts, error) {
-  opt := &travisOpts {
+func configureProvider(data *schema.ResourceData) (interface{}, error) {
+  // store input options in opts struct
+  opts := &travisOpts {
     token: data.Get("token").(string),
   }
 
-  return opt, err
+  // TODO: err handle
+
+  return opts, nil
 }

@@ -50,10 +50,15 @@ func buildJobCreate(data *schema.ResourceData, m interface{}) error {
   //, body='{"request": {"branch":"master"}}') TODO: and use branch from schema
 
   // receive response body
-  body = apiClient("POST", endpoint, headers, "")
+  body, err := apiClient("POST", endpoint, headers, "")
 
   // set resource id to response body
   data.SetId(body)
+
+  // TODO: error handle
+  if err != nil {
+    // stuff
+  }
 
   return buildJobRead(data, m)
 }
