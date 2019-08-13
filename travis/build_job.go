@@ -13,6 +13,7 @@ func buildJob() *schema.Resource {
     Read:   buildJobRead,
     Update: buildJobUpdate,
     Delete: buildJobDelete,
+    Exists: buildJobExists,
 
     Schema: map[string]*schema.Schema {
       "repository": &schema.Schema {
@@ -38,7 +39,7 @@ func buildJob() *schema.Resource {
 }
 
 // create a build job; TODO: .com for commercial, validate repo string
-func buildJobCreate(data *schema.ResourceData, m interface{}) error {
+func buildJobCreate(data *schema.ResourceData, meta interface{}) error {
   // convert repository value
   repository := strings.Replace(data.Get("repository").(string), "/", "%2F", 0)
 
@@ -60,20 +61,25 @@ func buildJobCreate(data *schema.ResourceData, m interface{}) error {
     // stuff
   }
 
-  return buildJobRead(data, m)
+  return buildJobRead(data, meta)
 }
 
 // read a build job
-func buildJobRead(data *schema.ResourceData, m interface{}) error {
+func buildJobRead(data *schema.ResourceData, meta interface{}) error {
   return nil
 }
 
 // update a build job
-func buildJobUpdate(data *schema.ResourceData, m interface{}) error {
-  return buildJobRead(data, m)
+func buildJobUpdate(data *schema.ResourceData, meta interface{}) error {
+  return buildJobRead(data, meta)
 }
 
 // delete a build job
-func buildJobDelete(data *schema.ResourceData, m interface{}) error {
+func buildJobDelete(data *schema.ResourceData, meta interface{}) error {
   return nil
+}
+
+// check for build job existence
+func buildJobExists(data *schema.ResourceData, meta interface{}) (exists bool, err error) {
+  return true, nil
 }

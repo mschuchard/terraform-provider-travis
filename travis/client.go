@@ -6,6 +6,11 @@ import (
   "io/ioutil"
 )
 
+// struct for passing opts from provider to resources
+type travisOpts struct {
+  token string
+}
+
 // primary helper function for client connections to api endpoint
 func apiClient(method string, endpoint string, headers map[string]string, body string) (string, error) {
   // construct url
