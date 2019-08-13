@@ -8,13 +8,19 @@ import (
 
 // struct for passing opts from provider to resources
 type travisOpts struct {
-  token string
+  token      string
+  commercial bool
 }
 
 // primary helper function for client connections to api endpoint
 func apiClient(method string, endpoint string, headers map[string]string, body string) (string, error) {
   // construct url
-  url := "https://api.travis-ci.org/repo/" + endpoint
+  var url string
+  if &travisOpts.commercial {
+    url = "https://api.travis-ci.com/repo/" + endpoint
+  } else {
+    url = "https://api.travis-ci.org/repo/" + endpoint
+  }
 
   // initialize http client
   client := &http.Client{}

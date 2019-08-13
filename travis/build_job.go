@@ -28,17 +28,11 @@ func buildJob() *schema.Resource {
         DefaultFunc: schema.EnvDefaultFunc("TRAVIS_BRANCH", "master"),
         Description: "Branch of the repository for the build job.",
       },
-      "commercial": &schema.Schema {
-        Type:        schema.TypeBool,
-        Optional:    true,
-        DefaultFunc: schema.EnvDefaultFunc("TRAVIS_BRANCH", false),
-        Description: "Whether to use the commercial or free version of TravisCI.",
-      },
     },
   }
 }
 
-// create a build job; TODO: .com for commercial, validate repo string
+// create a build job; TODO: validate repo string
 func buildJobCreate(data *schema.ResourceData, meta interface{}) error {
   // convert repository value
   repository := strings.Replace(data.Get("repository").(string), "/", "%2F", 0)

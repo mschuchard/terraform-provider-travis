@@ -5,11 +5,6 @@ import (
   "github.com/hashicorp/terraform/terraform"
 )
 
-// struct for passing opts from provider to resources
-type travisOpts struct {
-  token string
-}
-
 // init provider block
 func Provider() terraform.ResourceProvider {
   return &schema.Provider {
@@ -19,6 +14,12 @@ func Provider() terraform.ResourceProvider {
         Required:    true,
         DefaultFunc: schema.EnvDefaultFunc("TRAVIS_TOKEN", nil),
         Description: "TravisCI API Token",
+      },
+      "commercial": &schema.Schema {
+        Type:        schema.TypeBool,
+        Optional:    true,
+        DefaultFunc: schema.EnvDefaultFunc("TRAVIS_COMMERCIAL", false),
+        Description: "Whether to use the commercial or free version of TravisCI.",
       },
     },
     ResourcesMap: map[string]*schema.Resource {
@@ -33,6 +34,7 @@ func configureProvider(data *schema.ResourceData) (interface{}, error) {
   // store input options in opts struct
   opts := &travisOpts {
     token: data.Get("token").(string),
+    commercial: data.Get("commercial").(bool),
   }
 
   // TODO: err handle
