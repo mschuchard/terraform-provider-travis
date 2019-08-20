@@ -4,6 +4,7 @@ import (
   "github.com/hashicorp/terraform/helper/schema"
   "fmt"
   "strings"
+  "encoding/json"
 )
 
 // base reesource declaration and schema
@@ -28,6 +29,12 @@ func buildJob() *schema.Resource {
         DefaultFunc: schema.EnvDefaultFunc("TRAVIS_BRANCH", "master"),
         Description: "Branch of the repository for the build job.",
       },
+      "message": &schema.Schema {
+        Type:        schema.TypeString,
+        Optional:    true,
+        DefaultFunc: schema.EnvDefaultFunc("TRAVIS_MESSAGE", nil),
+        Description: "The commit message for the build job.",
+      },
     },
   }
 }
@@ -42,13 +49,15 @@ func buildJobCreate(data *schema.ResourceData, meta interface{}) error {
 
   // construct headers
   headers := map[string]string{}
-  //, body='{"request": {"branch":"master"}}') TODO: and use branch from schema
+  // construct request body; TODO: custom branch and message; nested map not allowed for type declare in go
+  requestMap := map[string]string{"request": {"branch": "master"}}
+  requestBody, err := json.Marshal(requestMap)
 
   // receive response body
-  body, err := apiClient("POST", endpoint, headers, "")
+  responseBody, err := apiClient("POST", endpoint, headers, requestBody)
 
   // set resource id to response body
-  data.SetId(body)
+  data.SetId(responseBody)
 
   // TODO: error handle
   if err != nil {

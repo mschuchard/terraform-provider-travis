@@ -13,7 +13,7 @@ type travisOpts struct {
 }
 
 // primary helper function for client connections to api endpoint
-func apiClient(method string, endpoint string, headers map[string]string, body string) (string, error) {
+func apiClient(method string, endpoint string, headers map[string]string, body []byte) (string, error) {
   // construct url
   var url string
   if &travisOpts.commercial {
@@ -25,9 +25,9 @@ func apiClient(method string, endpoint string, headers map[string]string, body s
   // initialize http client
   client := &http.Client{}
 
-  // ternary to convert body into bytes.Buffer pointer
+  // body into bytes.Buffer pointer
   var bodyBuffer *bytes.Buffer
-  bodyBuffer = bytes.NewBuffer([]byte(body))
+  bodyBuffer = bytes.NewBuffer(body)
 
   // body always request body or nil for reads
   request, err := http.NewRequest(method, url, bodyBuffer)
