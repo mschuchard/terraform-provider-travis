@@ -2,6 +2,7 @@ package travis
 
 import (
   "github.com/hashicorp/terraform/helper/schema"
+  "github.com/hashicorp/terraform/helper/validation"
   "fmt"
   "strings"
   "encoding/json"
@@ -18,10 +19,12 @@ func buildJob() *schema.Resource {
 
     Schema: map[string]*schema.Schema {
       "repository": &schema.Schema {
-        Type:        schema.TypeString,
-        Required:    true,
-        DefaultFunc: schema.EnvDefaultFunc("TRAVIS_REPO", nil),
-        Description: "Repository to trigger the build job for.",
+        Type:         schema.TypeString,
+        Required:     true,
+        DefaultFunc:  schema.EnvDefaultFunc("TRAVIS_REPO", nil),
+        // TODO: needs to be *regexp.Regexp and not string type
+        ValidateFunc: validation.StringMatch(`^[a-z0-9]+/[a-z0-9]$`, "The repository argument value must be of the form organization_name/repository_name."),
+        Description:  "Repository to trigger the build job for.",
       },
       "branch": &schema.Schema {
         Type:        schema.TypeString,
@@ -39,7 +42,7 @@ func buildJob() *schema.Resource {
   }
 }
 
-// create a build job; TODO: validate repo string
+// create a build job
 func buildJobCreate(data *schema.ResourceData, meta interface{}) error {
   // convert repository value
   repository := strings.Replace(data.Get("repository").(string), "/", "%2F", 0)
@@ -49,8 +52,8 @@ func buildJobCreate(data *schema.ResourceData, meta interface{}) error {
 
   // construct headers
   headers := map[string]string{}
-  // construct request body; TODO: custom branch and message; nested map not allowed for type declare in go
-  requestMap := map[string]string{"request": {"branch": "master"}}
+  // construct request body; TODO: custom message; nested map not allowed for type declare in go
+  requestMap := map[string]string{"request": {"branch": data.Get("branch").(string)}}
   requestBody, err := json.Marshal(requestMap)
 
   // receive response body
