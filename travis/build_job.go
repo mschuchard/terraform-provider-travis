@@ -23,7 +23,7 @@ func buildJob() *schema.Resource {
         Required:     true,
         DefaultFunc:  schema.EnvDefaultFunc("TRAVIS_REPO", nil),
         // TODO: needs to be *regexp.Regexp and not string type
-        ValidateFunc: validation.StringMatch(`^[a-z0-9]+/[a-z0-9]$`, "The repository argument value must be of the form organization_name/repository_name."),
+        ValidateFunc: validation.StringMatch(`^[a-zA-Z0-9]+/[a-zA-Z0-9]$`, "The repository argument value must be of the form organization_name/repository_name."),
         Description:  "Repository to trigger the build job for.",
       },
       "branch": &schema.Schema {

@@ -3,6 +3,7 @@ package travis
 import (
   "github.com/hashicorp/terraform/helper/schema"
   "github.com/hashicorp/terraform/terraform"
+  "github.com/hashicorp/terraform/helper/validation"
 )
 
 // init provider block
@@ -10,10 +11,12 @@ func Provider() terraform.ResourceProvider {
   return &schema.Provider {
     Schema: map[string]*schema.Schema {
       "token": &schema.Schema {
-        Type:        schema.TypeString,
-        Required:    true,
-        DefaultFunc: schema.EnvDefaultFunc("TRAVIS_TOKEN", nil),
-        Description: "TravisCI API Token",
+        Type:         schema.TypeString,
+        Required:     true,
+        DefaultFunc:  schema.EnvDefaultFunc("TRAVIS_TOKEN", nil),
+        // TODO: needs to be *regexp.Regexp and not string type
+        ValidateFunc: validation.StringMatch(`^[a-zA-Z0-9]+$`, "The token argument value must conform to characters and integers."),
+        Description:  "TravisCI API Token",
       },
       "commercial": &schema.Schema {
         Type:        schema.TypeBool,

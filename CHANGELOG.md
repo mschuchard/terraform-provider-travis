@@ -1,4 +1,4 @@
-docs: travis api, terraform custom provider, restapi provider
+docs: travis api, terraform custom provider
 
 {
   "@type": "error",
