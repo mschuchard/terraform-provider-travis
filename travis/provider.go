@@ -4,7 +4,7 @@ import (
   "github.com/hashicorp/terraform/helper/schema"
   "github.com/hashicorp/terraform/terraform"
   "github.com/hashicorp/terraform/helper/validation"
-  
+
   "regexp"
 )
 
@@ -16,7 +16,7 @@ func Provider() terraform.ResourceProvider {
         Type:         schema.TypeString,
         Required:     true,
         DefaultFunc:  schema.EnvDefaultFunc("TRAVIS_TOKEN", nil),
-        ValidateFunc: validation.StringMatch(regexp.Compile(`^[a-zA-Z0-9]+$`), "The token argument value must conform to characters and integers."),
+        ValidateFunc: validation.StringMatch(regexpValidate("`^[a-zA-Z0-9]+$`"), "The token argument value must conform to characters and integers."),
         Description:  "TravisCI API Token",
       },
       "commercial": &schema.Schema {
@@ -31,6 +31,13 @@ func Provider() terraform.ResourceProvider {
     },
     ConfigureFunc: configureProvider,
   }
+}
+
+// regexp validator helper
+func regexpValidate(expression string) *Regexp {
+  // strip away error from regexp.compile for use in validation
+  regexpStruct, _ := regexp.Compile(expression)
+  return regexpStruct
 }
 
 // configure provider options; TODO: token validity check of some kind

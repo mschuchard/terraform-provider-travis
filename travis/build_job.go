@@ -3,10 +3,9 @@ package travis
 import (
   "github.com/hashicorp/terraform/helper/schema"
   "github.com/hashicorp/terraform/helper/validation"
-  
+
   "fmt"
   "strings"
-  "regexp"
   "encoding/json"
 )
 
@@ -24,7 +23,7 @@ func buildJob() *schema.Resource {
         Type:         schema.TypeString,
         Required:     true,
         DefaultFunc:  schema.EnvDefaultFunc("TRAVIS_REPO", nil),
-        ValidateFunc: validation.StringMatch(regexp.Compile(`^[a-zA-Z0-9]+/[a-zA-Z0-9]$`), "The repository argument value must be of the form organization_name/repository_name."),
+        ValidateFunc: validation.StringMatch(regexpValidate("`^[a-zA-Z0-9]+/[a-zA-Z0-9]$`"), "The repository argument value must be of the form organization_name/repository_name."),
         Description:  "Repository to trigger the build job for.",
       },
       "branch": &schema.Schema {
