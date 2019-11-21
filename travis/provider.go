@@ -34,7 +34,7 @@ func Provider() terraform.ResourceProvider {
 }
 
 // regexp validator helper
-func regexpValidate(expression string) *Regexp {
+func regexpValidate(expression string) *regexp.Regexp {
   // strip away error from regexp.compile for use in validation
   regexpStruct, _ := regexp.Compile(expression)
   return regexpStruct

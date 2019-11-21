@@ -52,8 +52,8 @@ func buildJobCreate(data *schema.ResourceData, meta interface{}) error {
 
   // construct headers
   headers := map[string]string{}
-  // construct request body; TODO: nested map not allowed for type declare in go
-  requestMap := map[string]string{"request": {"branch": data.Get("branch").(string), "message": data.Get("message").(string)}}
+  // construct request body
+  requestMap := map[string]map[string]string{"request": {"branch": data.Get("branch").(string), "message": data.Get("message").(string)}}
   requestBody, err := json.Marshal(requestMap)
 
   // receive response body
