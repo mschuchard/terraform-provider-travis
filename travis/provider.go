@@ -44,7 +44,7 @@ func regexpValidate(expression string) *regexp.Regexp {
 func configureProvider(data *schema.ResourceData) (interface{}, error) {
   // store input options in opts struct
   opts := &travisOpts {
-    token: data.Get("token").(string),
+    token:      data.Get("token").(string),
     commercial: data.Get("commercial").(bool),
   }
 

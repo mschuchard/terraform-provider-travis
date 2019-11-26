@@ -56,8 +56,16 @@ func buildJobCreate(data *schema.ResourceData, meta interface{}) error {
   requestMap := map[string]map[string]string{"request": {"branch": data.Get("branch").(string), "message": data.Get("message").(string)}}
   requestBody, err := json.Marshal(requestMap)
 
+  // construct travisopts
+  opts := &travisOpts {
+    method:   "POST",
+    endpoint: endpoint,
+    headers:  headers,
+    body:     requestBody,
+  }
+
   // receive response body
-  responseBody, err := apiClient("POST", endpoint, headers, requestBody)
+  responseBody, err := apiClient(opts)
 
   // set resource id to response body
   data.SetId(responseBody)
