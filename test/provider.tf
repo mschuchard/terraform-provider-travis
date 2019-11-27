@@ -1,3 +1,3 @@
-provider travis {
+provider "travis" {
   token = "foo"
 }

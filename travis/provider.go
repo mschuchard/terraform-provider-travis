@@ -42,7 +42,7 @@ func regexpValidate(expression string) *regexp.Regexp {
 
 // configure provider options; TODO: token validity check of some kind
 func configureProvider(data *schema.ResourceData) (interface{}, error) {
-  // store input options in opts struct
+  // store input options in opts struct; TODO: need to carry these around
   opts := &travisOpts {
     token:      data.Get("token").(string),
     commercial: data.Get("commercial").(bool),
