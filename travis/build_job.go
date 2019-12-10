@@ -56,6 +56,11 @@ func buildJobCreate(data *schema.ResourceData, meta interface{}) error {
   requestMap := map[string]map[string]string{"request": {"branch": data.Get("branch").(string), "message": data.Get("message").(string)}}
   requestBody, err := json.Marshal(requestMap)
 
+  // error handle
+  if err != nil {
+    fmt.Errorf("Invalid conversion from Map to JSON.")
+  }
+
   // construct travisopts
   opts := &travisOpts {
     method:   "POST",
@@ -69,7 +74,7 @@ func buildJobCreate(data *schema.ResourceData, meta interface{}) error {
 
   // error handle
   if err != nil {
-    fmt.Errorf("Invalid response from Travis API.")
+    fmt.Errorf("Error interacting with Travis API.")
   }
 
   // set resource id to response body

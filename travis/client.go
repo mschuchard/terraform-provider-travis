@@ -65,5 +65,10 @@ func apiClient(opts *travisOpts) (string, error) {
   defer response.Body.Close()
   responseBody, err := ioutil.ReadAll(response.Body)
 
+  // error handle
+  if err != nil {
+    fmt.Errorf("Invalid response from Travis API.")
+  }
+
   return string(responseBody), err
 }

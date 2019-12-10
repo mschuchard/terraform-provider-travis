@@ -40,7 +40,7 @@ func regexpValidate(expression string) *regexp.Regexp {
   return regexpStruct
 }
 
-// configure provider options; TODO: token validity check of some kind
+// configure provider options
 func configureProvider(data *schema.ResourceData) (interface{}, error) {
   // store input options in opts struct; TODO: need to carry these around
   opts := &travisOpts {
