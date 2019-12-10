@@ -67,13 +67,13 @@ func buildJobCreate(data *schema.ResourceData, meta interface{}) error {
   // receive response body
   responseBody, err := apiClient(opts)
 
+  // error handle
+  if err != nil {
+    fmt.Errorf("Invalid response from Travis API.")
+  }
+
   // set resource id to response body
   data.SetId(responseBody)
-
-  // TODO: error handle
-  if err != nil {
-    // stuff
-  }
 
   return buildJobRead(data, meta)
 }

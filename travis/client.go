@@ -1,6 +1,7 @@
 package travis
 
 import (
+  "fmt"
   "bytes"
   "net/http"
   "io/ioutil"
@@ -36,7 +37,10 @@ func apiClient(opts *travisOpts) (string, error) {
   // body always request body or nil for reads
   request, err := http.NewRequest(opts.method, url, bodyBuffer)
 
-  // TODO: err handle
+  // error handle
+  if err != nil {
+    fmt.Errorf("Error constructing REST API request.")
+  }
 
   // append base headers
   request.Header.Add("Content-Type", "application/json")
@@ -52,7 +56,10 @@ func apiClient(opts *travisOpts) (string, error) {
   // initiate request for response
   response, err := client.Do(request)
 
-  // TODO: err handle
+  // error handle
+  if err != nil {
+    fmt.Errorf("Error making request to Travis API.")
+  }
 
   // read body of response and return it
   defer response.Body.Close()

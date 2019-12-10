@@ -48,7 +48,5 @@ func configureProvider(data *schema.ResourceData) (interface{}, error) {
     commercial: data.Get("commercial").(bool),
   }
 
-  // TODO: err handle
-
   return opts, nil
 }
