@@ -8,6 +8,13 @@ import (
 func dataSubscriptions() *schema.Resource {
   return &schema.Resource{
     Read: subscriptionsRead,
+
+    Schema: map[string]*schema.Schema {
+      "subscriptions": {
+        Type:     schema.TypeArray,
+        Computed: true,
+      },
+    },
   }
 }
 

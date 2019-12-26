@@ -9,7 +9,7 @@ import (
   "encoding/json"
 )
 
-// base reesource declaration and schema
+// build job resource declaration and schema
 func buildJob() *schema.Resource {
   return &schema.Resource {
     Create: buildJobCreate,
@@ -61,7 +61,7 @@ func buildJobCreate(data *schema.ResourceData, meta interface{}) error {
     fmt.Errorf("Invalid conversion from Map to JSON.")
   }
 
-  // construct travisopts
+  // construct travisOpts
   opts := &travisOpts {
     method:   "POST",
     endpoint: endpoint,
