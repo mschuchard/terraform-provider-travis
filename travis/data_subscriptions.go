@@ -34,9 +34,12 @@ func subscriptionsRead(meta interface{}) error {
   // error handle
   if err != nil {
     fmt.Errorf("Error interacting with Travis API.")
+  // verify subscriptions returned from travis
+  } else if _, exists := responseBody["subscriptions"]; exists {
+    // set subscriptions attribute and return
+    data.set("subscriptions", responseBody["subscriptions"])
+    return nil
+  } else {
+    fmt.Errorf("Subscriptions not found in response from Travis.")
   }
-
-  // data set id
-
-  // return { ... "subscriptions": [] }; verify this key is returned too
 }
