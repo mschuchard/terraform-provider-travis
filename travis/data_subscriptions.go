@@ -2,6 +2,7 @@ package travis
 
 import (
   "fmt"
+  "encoding/json"
 
   "github.com/hashicorp/terraform/helper/schema"
 )
@@ -36,10 +37,19 @@ func subscriptionsRead(data *schema.ResourceData, meta interface{}) error {
   // error handle
   if err != nil {
     fmt.Errorf("Error interacting with Travis API.")
+  }
+
+  // convert response json to map
+  var responseMap map[string][]string
+  err = json.Unmarshal(responseBody, &responseMap)
+
+  // error handle
+  if err != nil {
+    fmt.Errorf("Invalid JSON response from Travis.")
   // verify subscriptions returned from travis
-  } else if _, exists := responseBody["subscriptions"]; exists {
+  } else if _, exists := responseMap["subscriptions"]; exists {
     // set subscriptions attribute and return
-    data.Set("subscriptions", responseBody["subscriptions"])
+    data.Set("subscriptions", responseMap["subscriptions"])
     return nil
   } else {
     fmt.Errorf("Subscriptions not found in response from Travis.")
