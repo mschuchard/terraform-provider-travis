@@ -1,6 +1,8 @@
 package travis
 
 import (
+  "fmt"
+
   "github.com/hashicorp/terraform/helper/schema"
 )
 
@@ -11,7 +13,7 @@ func dataSubscriptions() *schema.Resource {
 
     Schema: map[string]*schema.Schema {
       "subscriptions": {
-        Type:     schema.TypeArray,
+        Type:     schema.TypeSet,
         Computed: true,
       },
     },
@@ -19,9 +21,9 @@ func dataSubscriptions() *schema.Resource {
 }
 
 // read function for the data
-func subscriptionsRead(meta interface{}) error {
+func subscriptionsRead(data *schema.ResourceData, meta interface{}) error {
   // construct endpoint
-  endpoint = ":9293/subscriptions"
+  endpoint := ":9293/subscriptions"
 
   // construct travisOpts
   opts := &travisOpts {
@@ -37,9 +39,11 @@ func subscriptionsRead(meta interface{}) error {
   // verify subscriptions returned from travis
   } else if _, exists := responseBody["subscriptions"]; exists {
     // set subscriptions attribute and return
-    data.set("subscriptions", responseBody["subscriptions"])
+    data.Set("subscriptions", responseBody["subscriptions"])
     return nil
   } else {
     fmt.Errorf("Subscriptions not found in response from Travis.")
   }
+
+  return err
 }
