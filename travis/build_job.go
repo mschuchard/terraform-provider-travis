@@ -77,8 +77,22 @@ func buildJobCreate(data *schema.ResourceData, meta interface{}) error {
     fmt.Errorf("Error interacting with Travis API.")
   }
 
-  // set resource id to response body
-  data.SetId(responseBody)
+  // convert response json to map
+  var responseMap map[string][]string
+  err = json.Unmarshal(responseBody, &responseMap)
+
+  // error handle
+  if err != nil {
+    fmt.Errorf("Invalid JSON response from Travis.")
+  }
+
+  // set resource id to response body; TODO: should not be setting id to entire json string
+  if _, exists := responseMap["request"]["id"]; exists {
+    // set resource id
+    data.SetId(responseMap["request"]["id"])
+  } else {
+    fmt.Errorf("Request ID not found in response from Travis.")
+  }
 
   return buildJobRead(data, meta)
 }
