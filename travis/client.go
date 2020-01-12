@@ -5,6 +5,7 @@ import (
   "bytes"
   "net/http"
   "io/ioutil"
+  "encoding/json"
 )
 
 // struct for passing opts from provider to resources
@@ -18,7 +19,7 @@ type travisOpts struct {
 }
 
 // primary helper function for client connections to api endpoint
-func apiClient(opts *travisOpts) (string, error) {
+func apiClient(opts *travisOpts) (map[string][]string, error) {
   // construct url
   var url string
   if opts.commercial {
@@ -70,5 +71,14 @@ func apiClient(opts *travisOpts) (string, error) {
     fmt.Errorf("Invalid response from Travis API.")
   }
 
-  return string(responseBody), err
+  // convert response json to map
+  var responseMap map[string][]string
+  err = json.Unmarshal(responseBody, &responseMap)
+
+  // error handle
+  if err != nil {
+    fmt.Errorf("Invalid JSON response from Travis.")
+  }
+
+  return responseMap, err
 }

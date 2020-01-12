@@ -32,22 +32,15 @@ func subscriptionsRead(data *schema.ResourceData, meta interface{}) error {
   }
 
   // receive response body
-  responseBody, err := apiClient(opts)
+  responseMap, err := apiClient(opts)
 
   // error handle
   if err != nil {
     fmt.Errorf("Error interacting with Travis API.")
   }
 
-  // convert response json to map
-  var responseMap map[string][]string
-  err = json.Unmarshal(responseBody, &responseMap)
-
-  // error handle
-  if err != nil {
-    fmt.Errorf("Invalid JSON response from Travis.")
   // verify subscriptions returned from travis
-  } else if _, exists := responseMap["subscriptions"]; exists {
+  if _, exists := responseMap["subscriptions"]; exists {
     // set subscriptions attribute and return
     data.Set("subscriptions", responseMap["subscriptions"])
     return nil
