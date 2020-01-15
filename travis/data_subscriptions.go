@@ -2,7 +2,6 @@ package travis
 
 import (
   "fmt"
-  "encoding/json"
 
   "github.com/hashicorp/terraform/helper/schema"
 )
@@ -32,7 +31,7 @@ func subscriptionsRead(data *schema.ResourceData, meta interface{}) error {
   }
 
   // receive response body
-  responseMap, err := apiClient(opts)
+  responseMap, err := APIClient(opts)
 
   // error handle
   if err != nil {

@@ -19,7 +19,7 @@ type travisOpts struct {
 }
 
 // primary helper function for client connections to api endpoint
-func apiClient(opts *travisOpts) (map[string][]string, error) {
+func APIClient(opts *travisOpts) (map[string][]string, error) {
   // construct url
   var url string
   if opts.commercial {

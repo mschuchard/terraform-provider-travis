@@ -9,7 +9,7 @@ import (
   "encoding/json"
 )
 
-// build job resource declaration and schema
+// build job resource declaration and schema; TODO: more exported attributes
 func buildJob() *schema.Resource {
   return &schema.Resource {
     Create: buildJobCreate,
@@ -70,14 +70,14 @@ func buildJobCreate(data *schema.ResourceData, meta interface{}) error {
   }
 
   // receive response body
-  responseMap, err := apiClient(opts)
+  responseMap, err := APIClient(opts)
 
   // error handle
   if err != nil {
     fmt.Errorf("Error interacting with Travis API.")
   }
 
-  // set resource id to response body; TODO: should not be setting id to entire json string
+  // set resource id to response body
   if _, exists := responseMap["request"]["id"]; exists {
     // set resource id
     data.SetId(responseMap["request"]["id"])
