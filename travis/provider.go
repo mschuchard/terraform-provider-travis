@@ -26,6 +26,9 @@ func Provider() terraform.ResourceProvider {
         Description: "Whether to use the commercial or free version of TravisCI.",
       },
     },
+    DataSourcesMap: map[string]*schema.Resource {
+      "subscriptions": dataSubscriptions(),
+    },
     ResourcesMap: map[string]*schema.Resource {
       "build_job": buildJob(),
     },
@@ -48,5 +51,8 @@ func configureProvider(data *schema.ResourceData) (interface{}, error) {
     commercial: data.Get("commercial").(bool),
   }
 
-  return opts, nil
+  // init client
+  client, err := APIClient(opts)
+
+  return client, nil
 }
