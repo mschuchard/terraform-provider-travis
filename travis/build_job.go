@@ -1,7 +1,7 @@
 package travis
 
 import (
-  "github.com/hashicorp/terraform/helper/schema"
+  "github.com/hashicorp/terraform-plugin-sdk/helper/schema"
   "github.com/hashicorp/terraform/helper/validation"
 
   "fmt"
@@ -17,6 +17,9 @@ func buildJob() *schema.Resource {
     Update: buildJobUpdate,
     Delete: buildJobDelete,
     Exists: buildJobExists,
+    Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 
     Schema: map[string]*schema.Schema {
       "repository": &schema.Schema {

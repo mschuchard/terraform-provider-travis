@@ -1,15 +1,13 @@
 package main
 
 import (
-  "github.com/hashicorp/terraform/plugin"
-  "github.com/hashicorp/terraform/terraform"
+  "github.com/hashicorp/terraform-plugin-sdk/plugin"
+  "github.com/hashicorp/terraform-plugin-sdk/terraform"
   "travis"
 )
 
 func main() {
   plugin.Serve(&plugin.ServeOpts {
-    ProviderFunc: func() terraform.ResourceProvider {
-      return travis.Provider()
-    },
+    ProviderFunc: travis.Provider,
   })
 }

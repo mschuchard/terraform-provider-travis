@@ -6,7 +6,7 @@ import (
   "github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 )
 
-func TestDataSubscriptions(test *testing.T) {
+func TestAccDataSubscriptions(test *testing.T) {
 	resource.Test(test, resource.TestCase{
 		Providers: testProviders,
 		Steps: []resource.TestStep{
@@ -20,7 +20,7 @@ func TestDataSubscriptions(test *testing.T) {
 	})
 }
 
-func testDataSubscriptionsCheck(name, reference string) resource.TestCheckFunc {
+func TestDataSubscriptionsCheck(name, reference string) resource.TestCheckFunc {
 	return resource.ComposeTestCheckFunc(
 		resource.TestCheckResourceAttrPair(name, "subscriptions", reference, "subscriptions"),
 	)
