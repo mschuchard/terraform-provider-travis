@@ -30,7 +30,7 @@ func Provider() terraform.ResourceProvider {
       "subscriptions": dataSubscriptions(),
     },
     ResourcesMap: map[string]*schema.Resource {
-      "build_job": buildJob(),
+      "build_job": resourceBuildJob(),
     },
     ConfigureFunc: configureProvider,
   }

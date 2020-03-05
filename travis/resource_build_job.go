@@ -10,7 +10,7 @@ import (
 )
 
 // build job resource declaration and schema; TODO: more exported attributes
-func buildJob() *schema.Resource {
+func resourceBuildJob() *schema.Resource {
   return &schema.Resource {
     Create: buildJobCreate,
     Read:   buildJobRead,
