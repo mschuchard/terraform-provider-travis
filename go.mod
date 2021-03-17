@@ -1,7 +1,7 @@
 module github.com/mschuchard/terraform-provider-travis
 
-go 1.12
+go 1.13
 
 require (
-  github.com/hashicorp/terraform >=0.12.7
+  github.com/hashicorp/terraform-plugin-sdk
 )
